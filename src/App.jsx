@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./App.css"; // Import the CSS file
 
 const App = () => {
   const [time, setTime] = useState(0);
@@ -8,38 +9,39 @@ const App = () => {
     let interval;
 
     if (isRunning) {
-      // Start the timer
       interval = setInterval(() => {
         setTime((prevTime) => prevTime + 10);
       }, 10);
-    } else {
-      // Stop the timer when it's not running
-      clearInterval(interval);
     }
 
-    // Cleanup function
     return () => clearInterval(interval);
   }, [isRunning]);
 
+  const handleReset = () => {
+    setIsRunning(false);
+    setTime(0);
+  };
+
   return (
-    <>
+    <div className="stopwatch">
       <h1>Stopwatch</h1>
-      <div>
-        {/* Display minutes */}
+      <div className="time-display">
         <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
-        {/* Display seconds */}
         <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
-        {/* Display milliseconds */}
         <span>{("0" + ((time / 10) % 100)).slice(-2)}</span>
       </div>
-      <div>
-        <button onClick={() => setIsRunning(false)}>Stop</button>
-
-        <button onClick={() => setIsRunning(true)}>Start</button>
-
-        <button onClick={() => setTime(0)}>Reset</button>
+      <div className="button-container">
+        <button className="start-button" onClick={() => setIsRunning(true)}>
+          Start
+        </button>
+        <button className="reset-button" onClick={handleReset}>
+          Reset
+        </button>
+        <button className="stop-button" onClick={() => setIsRunning(false)}>
+          Stop
+        </button>
       </div>
-    </>
+    </div>
   );
 };
 
